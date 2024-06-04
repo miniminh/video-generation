@@ -124,7 +124,7 @@ class VideoBot:
             video_clips.append(final_clip)
 
         final_video = concatenate_videoclips(video_clips)
-        final_video.write_videofile(f"{self.video_folder}/result.mp4", fps=24)
+        final_video.write_videofile(f"{self.video_folder}/result.mp4", fps=24, codec="h264_nvenc")
 
     def gen_subtitle(self):
         audio_file = open(f"{self.audio_folder}/result.mp3", "rb")

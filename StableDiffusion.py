@@ -14,21 +14,24 @@ translator.translate(image_prompt, dest='en').text
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sd-turbo", 
-                                                # torch_dtype=torch.float16, 
+                                                torch_dtype=torch.float16, 
                                                 variant="fp16")
 pipe.to(device)
 
 
 def create_list_image(script, timestamp):
     os.makedirs(f"result/{timestamp}/image", exist_ok=True)
-
+    urls = []
     for i in range(len(script)):
         print(i, translator.translate(script[i], dest='en').text)
         
         image = create_image(translator.translate(script[i], dest='en').text)
 
         image.save(f"result/{timestamp}/image/{i+1}.jpg")
+        urls.append(f"{i+1}.jpg")
         print(f"step {i} completed")
+    return urls
+    
 
 def create_image(prompt, height=1024, width=1024):
     
